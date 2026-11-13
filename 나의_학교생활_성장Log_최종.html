@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>나의 학교 생활 성장Log (With 뇽쌤)</title>
+<style>
+  :root{
+    --primary:#2563eb; --primary-dark:#1d4ed8; --bg:#f5f7fb; --card:#ffffff;
+    --fg:#111827; --muted:#6b7280; --border:#d1d5db; --hint-bg:#eff6ff; --hint-fg:#1e40af;
+    --danger:#dc2626; --ok:#059669; --radius:10px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",sans-serif;background:var(--bg);color:var(--fg);line-height:1.6;font-size:15px}
+  header{background:var(--card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
+  .wrap{max-width:860px;margin:0 auto;padding:0 16px}
+  header .wrap{padding-top:12px;padding-bottom:10px}
+  header h1{font-size:18px;margin:0 0 6px}
+  .progress{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden}
+  .progress>div{height:100%;background:var(--primary);width:0%;transition:width .3s}
+  .progress-text{font-size:12px;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between}
+  main{padding:16px 0 120px}
+  .intro{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:16px}
+  .intro p{margin:6px 0;font-size:14px;color:#374151}
+  section.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 16px;margin-bottom:16px}
+  section.card h2{font-size:17px;margin:0 0 4px;display:flex;align-items:center;gap:8px}
+  section.card h2 .num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--primary);color:#fff;font-size:13px;font-weight:700;flex-shrink:0}
+  .desc{font-size:13.5px;color:var(--muted);margin:0 0 14px}
+  .field{margin-bottom:16px}
+  .field:last-child{margin-bottom:0}
+  label.title{display:block;font-weight:600;font-size:14.5px;margin-bottom:4px}
+  label.title .req{color:var(--danger);margin-left:2px}
+  .hint{background:var(--hint-bg);color:var(--hint-fg);border-radius:6px;padding:8px 10px;font-size:13px;margin-bottom:8px;line-height:1.5}
+  .hint strong{font-weight:700}
+  select{width:100%;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font:inherit;font-size:15px;color:var(--fg);background:#fff;outline:none}
+  select:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .chips span{background:#fff;border:1px solid #bfdbfe;border-radius:6px;padding:2px 8px;font-size:12px;color:var(--hint-fg)}
+  .row-list .row select{margin-bottom:8px}
+  input[type=text],textarea{width:100%;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font:inherit;font-size:15px;color:var(--fg);background:#fff;outline:none;transition:border-color .15s,box-shadow .15s}
+  input[type=text]:focus,textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+  textarea{min-height:110px;resize:vertical}
+  textarea.tall{min-height:150px}
+  .counter{text-align:right;font-size:12px;color:var(--muted);margin-top:3px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media (max-width:560px){.grid2{grid-template-columns:1fr}}
+  .sub{font-size:13.5px;font-weight:600;color:#374151;margin:0 0 4px}
+  .row-list .row{border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:10px;background:#fafbfc;position:relative}
+  .row-list .row .remove{position:absolute;top:8px;right:8px;background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;line-height:1;padding:4px}
+  .row-list .row .remove:hover{color:var(--danger)}
+  .row-list .row .idx{font-size:12px;font-weight:700;color:var(--primary);margin-bottom:6px}
+  .row-list .row input,.row-list .row textarea{margin-bottom:8px}
+  .row-list .row textarea{min-height:80px}
+  .row-list .row>*:last-child{margin-bottom:0}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--border);background:#fff;color:var(--fg);border-radius:8px;padding:9px 14px;font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+  .btn:hover{background:#f3f4f6}
+  .btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+  .btn.primary:hover{background:var(--primary-dark)}
+  .btn.ghost{border-style:dashed;color:var(--primary);width:100%}
+  .btn.danger{color:var(--danger)}
+  .semester{border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:10px}
+  .semester .sub{color:var(--primary)}
+  .mitem{border-left:3px solid var(--primary);padding-left:12px;margin-bottom:16px}
+  .mitem:last-child{margin-bottom:0}
+  .mitem .sub{margin-bottom:6px}
+  .mitem input{margin-bottom:6px}
+  .mitem textarea{min-height:80px}
+  .footer-bar{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);padding:10px 16px;z-index:10}
+  .footer-bar .wrap{display:flex;flex-wrap:wrap;gap:8px;padding:0}
+  .footer-bar .btn{flex:1;min-width:120px}
+  .save-status{font-size:12px;color:var(--ok);width:100%;text-align:center;margin-top:2px;min-height:16px}
+  /* modal */
+  .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:50;align-items:flex-end;justify-content:center}
+  .modal.open{display:flex}
+  .modal .box{background:#fff;width:100%;max-width:860px;max-height:90vh;border-radius:16px 16px 0 0;display:flex;flex-direction:column}
+  @media (min-width:700px){.modal{align-items:center}.modal .box{border-radius:16px}}
+  .modal .box .head{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+  .modal .box .head h3{margin:0;font-size:16px}
+  .modal .box .body{padding:16px;overflow:auto;flex:1}
+  .modal .box .body pre{white-space:pre-wrap;word-break:break-word;font:inherit;font-size:14px;margin:0;line-height:1.7}
+  .modal .box .foot{padding:12px 16px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap}
+  .modal .box .foot .btn{flex:1;min-width:110px}
+  .submit-panel{border:1px solid #bfdbfe;background:#eff6ff;border-radius:10px;padding:14px;margin-bottom:14px}
+  .submit-panel .submit-title{font-weight:700;font-size:15px;margin-bottom:4px;color:var(--hint-fg)}
+  .submit-panel p{margin:0 0 10px;font-size:13.5px;color:#1f2937}
+  .submit-actions{display:flex;gap:8px;flex-wrap:wrap}
+  .submit-actions .btn{flex:1;min-width:150px}
+  .btn.big{padding:12px 14px;font-size:15px}
+  .btn:disabled{opacity:.6;cursor:default}
+  .submit-status{margin-top:10px;font-size:13.5px;min-height:1.2em}
+  .submit-status.ok{color:var(--ok);font-weight:600}
+  .submit-status.err{color:var(--danger);font-weight:600}
+  .submit-status a{color:var(--primary)}
+  .missing{border-color:var(--danger) !important}
+  .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 16px;border-radius:8px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:60}
+  .toast.show{opacity:1}
+  /* print */
+  @media print{
+    header,.footer-bar,.hint,.counter,.btn,.remove,.intro .noprint,.toast,.modal{display:none !important}
+    body{background:#fff;font-size:12.5px}
+    main{padding:0}
+    section.card{border:none;padding:0 0 12px;page-break-inside:avoid;margin-bottom:8px}
+    select{border:none;border-bottom:1px solid #999;border-radius:0;padding:4px 2px;background:#fff;-webkit-appearance:none;appearance:none}
+    input[type=text],textarea{border:none;border-bottom:1px solid #999;border-radius:0;padding:4px 2px;background:#fff}
+    textarea{min-height:0;height:auto;overflow:visible}
+    .row-list .row,.semester{background:#fff;border-color:#bbb}
+    .print-title{display:block !important;font-size:18px;font-weight:700;text-align:center;margin:0 0 14px}
+  }
+  .print-title{display:none}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>나의 학교 생활 성장Log (With 뇽쌤)</h1>
+    <div class="progress"><div id="progressBar"></div></div>
+    <div class="progress-text"><span id="progressText">작성 진행률 0%</span><span id="autosaveText">자동 저장 켜짐</span></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <h1 class="print-title">나의 학교 생활 성장Log (With 뇽쌤)</h1>
+
+  <div class="intro">
+    <p><strong>작성 안내</strong></p>
+    <p class="noprint">· 작성한 내용은 이 기기(브라우저)에 <strong>자동 저장</strong>됩니다. 나중에 다시 열어 이어서 쓸 수 있어요.</p>
+    <p class="noprint">· 모든 항목을 쓰고 나면 아래 <strong>[완성본 확인 · 제출하기]</strong>에서 <strong>제출하기</strong> 버튼을 누르면 뇽쌤의 구글시트로 자동 전송되고, <strong>PDF로 저장</strong>도 할 수 있어요.</p>
+    <p>· 이 내용은 <strong>학교생활기록부(자율·진로활동, 행동특성 및 종합의견)</strong> 작성에 참고됩니다. 사실에 근거해 <strong>구체적으로</strong> 써 주세요.</p>
+  </div>
+
+  <!-- 기본 정보 -->
+  <section class="card" id="sec0">
+    <h2><span class="num">0</span>기본 정보</h2>
+    <div class="grid2">
+      <div class="field">
+        <label class="title" for="name">이름<span class="req">*</span></label>
+        <input type="text" id="name" data-key="name" placeholder="예: 김민지">
+      </div>
+      <div class="field">
+        <label class="title" for="sid">학번<span class="req">*</span></label>
+        <input type="text" id="sid" data-key="sid" placeholder="예: 10315 (학년-반-번호)" inputmode="numeric">
+      </div>
+    </div>
+    <div class="field">
+      <label class="title" for="career">진로 희망 분야<span class="req">*</span></label>
+      <div class="hint">⚠️ <strong>생기부에 기재될 내용</strong>이니 정확하게 씁시다. 희망 직업이나 계열·학과 수준으로 구체적으로 적어 주세요. (예: 간호사 / 소프트웨어 개발자 / 사회복지 분야 / 아직 탐색 중이라면 관심 있는 분야 2~3개)</div>
+      <input type="text" id="career" data-key="career" placeholder="예: 임상병리사(보건·의료 계열)">
+    </div>
+  </section>
+
+  <!-- 1 -->
+  <section class="card" id="sec1">
+    <h2><span class="num">1</span>올해 나의 학교생활 돌아보기</h2>
+    <p class="desc">자신이 구체적으로 <strong>어떤 역할을 맡았고</strong>, 그 역할을 통해 <strong>무엇을 배웠는지</strong> 작성해 봅시다.</p>
+
+    <div class="field">
+      <label class="title">① 학교에서 참여한 프로그램 기록하기<span class="req">*</span></label>
+      <div class="hint">자율활동·진로활동 기록 시 <strong>누락을 방지</strong>하기 위한 것이니 정확하게 서술합시다. 학교 행사, 특강, 체험활동, 캠프, 동아리 발표, 교내 대회, 멘토링, 봉사 등 참여한 것은 모두 적어 주세요.</div>
+      <div class="row-list" id="programList"></div>
+      <button type="button" class="btn ghost" onclick="addProgram()">＋ 프로그램 추가</button>
+    </div>
+
+    <div class="field">
+      <label class="title" for="grade">② 학업성적 관리<span class="req">*</span></label>
+      <div class="hint">성적의 변화, 성적 향상을 위한 노력, 잘했던 점이나 아쉬웠던 점 등을 적어 주세요.<br>예) "1학기보다 2학기 수학 성적이 올랐는데, 매일 오답노트를 정리한 것이 도움이 되었다. 반면 영어 단어 암기를 꾸준히 하지 못해 아쉬웠다."</div>
+      <textarea id="grade" data-key="grade" class="tall" placeholder="성적의 변화 → 그 이유(노력 또는 부족했던 점) → 잘한 점 / 아쉬운 점 순서로 쓰면 좋아요."></textarea>
+      <div class="counter"></div>
+    </div>
+
+    <div class="field">
+      <label class="title">③ 학급 내 1인 1역 수행<span class="req">*</span></label>
+      <div class="hint">맡은 역할 이름을 <strong>1학기와 2학기 구분</strong>해서 쓰고, 실제로 어떤 활동을 했는지 적어 주세요.</div>
+      <div class="semester">
+        <p class="sub">1학기</p>
+        <input type="text" data-key="role1name" placeholder="맡은 역할 이름 (예: 칠판 정리 담당, 학습 도우미, 환경미화부)">
+        <textarea data-key="role1desc" placeholder="활동 내용: 언제, 무엇을, 어떻게 했는지 구체적으로"></textarea>
+        <div class="counter"></div>
+      </div>
+      <div class="semester">
+        <p class="sub">2학기</p>
+        <input type="text" data-key="role2name" placeholder="맡은 역할 이름">
+        <textarea data-key="role2desc" placeholder="활동 내용: 언제, 무엇을, 어떻게 했는지 구체적으로"></textarea>
+        <div class="counter"></div>
+      </div>
+      <p class="sub" style="margin-top:12px">1인 1역 외에 학급을 위해 기여한 행동이나 기억에 남는 에피소드</p>
+      <textarea data-key="roleExtra" placeholder="1인 1역 외에 본인이 학급을 위해 기여한 행동이나 기억에 남는 에피소드가 있다면 구체적으로 서술해 보세요."></textarea>
+      <div class="counter"></div>
+    </div>
+
+    <div class="field">
+      <label class="title" for="forFriends">④ 친구들을 위해 했던 일</label>
+      <div class="hint">공식적인 역할 외에, 학급에 <strong>자발적으로 기여한 숨은 노력</strong>이 있다면 적어 주세요.<br>예) 교실 환경 정리, 친구 학습 도와주기, 학급 행사 주도, 아픈 친구 챙기기, 전학생 적응 돕기 등</div>
+      <textarea id="forFriends" data-key="forFriends" placeholder="누구에게, 어떤 상황에서, 무엇을 했는지 떠올려 보세요."></textarea>
+      <div class="counter"></div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="card" id="sec2">
+    <h2><span class="num">2</span>우리 반 친구들의 숨은 미담 찾기</h2>
+    <p class="desc"><strong>이름과 구체적인 일화</strong>를 함께 작성해 봅시다. "착해요"보다 "○월에 ○○한 일이 있었다"처럼 장면이 떠오르게 써 주세요. 한 친구를 여러 항목에 써도 괜찮습니다.</p>
+
+    <div class="mitem">
+      <p class="sub">🧹 청소 및 환경 정리를 묵묵히 잘하는 친구</p>
+      <input type="text" data-key="m1name" placeholder="친구 이름">
+      <textarea data-key="m1desc" placeholder="구체적인 일화"></textarea>
+    </div>
+    <div class="mitem">
+      <p class="sub">🤝 배려심과 봉사심이 돋보였던 친구</p>
+      <input type="text" data-key="m2name" placeholder="친구 이름">
+      <textarea data-key="m2desc" placeholder="구체적인 일화"></textarea>
+    </div>
+    <div class="mitem">
+      <p class="sub">📖 수업 태도가 성실하고 모범적인 친구</p>
+      <input type="text" data-key="m3name" placeholder="친구 이름">
+      <textarea data-key="m3desc" placeholder="구체적인 일화"></textarea>
+    </div>
+    <div class="mitem">
+      <p class="sub">🚩 학급 일을 주도하며 리더십을 발휘한 친구</p>
+      <input type="text" data-key="m4name" placeholder="친구 이름">
+      <textarea data-key="m4desc" placeholder="구체적인 일화"></textarea>
+    </div>
+    <div class="mitem">
+      <p class="sub">😊 분위기를 밝게 만들고 친구들과 두루 잘 어울리는 친구</p>
+      <input type="text" data-key="m5name" placeholder="친구 이름">
+      <textarea data-key="m5desc" placeholder="구체적인 일화"></textarea>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="card" id="sec3">
+    <h2><span class="num">3</span>학업 및 진로 탐색을 위한 노력</h2>
+    <div class="field">
+      <label class="title" for="studyEffort">① 성적 향상을 위한 노력<span class="req">*</span></label>
+      <div class="hint">중간고사 이후부터 기말고사까지의 생활, 자기주도적 학습을 위한 노력, 목표 설정에 대해 구체적으로 작성해 봅시다.<br>예) 하루 학습 계획표 작성, 특정 과목 집중 보완, 학습 플래너·스터디 활용, 다음 학기 목표 등수나 등급</div>
+      <textarea id="studyEffort" data-key="studyEffort" class="tall" placeholder="중간고사 이후 생활 → 자기주도학습 방법 → 세운 목표와 달성 여부"></textarea>
+      <div class="counter"></div>
+    </div>
+    <div class="field">
+      <label class="title" for="careerEffort">② 진로 탐색을 위한 노력<span class="req">*</span></label>
+      <div class="hint">직업 찾아보기, 학과 탐색하기, 관련 교과 활동 참여하기 등에 대해 구체적으로 작성해 봅시다.<br>예) 관심 직업 인터뷰·영상 시청, 대학 학과 홈페이지 탐색, 관련 도서 읽기, 진로 관련 수업 발표·탐구 주제 선정, 진로 체험 참여</div>
+      <textarea id="careerEffort" data-key="careerEffort" class="tall" placeholder="무엇을 찾아보았고, 그 결과 진로에 대한 생각이 어떻게 달라졌는지도 적어 보세요."></textarea>
+      <div class="counter"></div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="card" id="sec4">
+    <h2><span class="num">4</span>스스로를 평가 및 성찰하기</h2>
+    <div class="field">
+      <label class="title" for="growth">① 올 한 해 스스로 가장 성장했다고 느끼는 부분<span class="req">*</span></label>
+      <div class="hint">나의 강점 또는 성격, 행동, 성적 등에서의 <strong>변화</strong>를 적어 주세요. "3월의 나"와 "지금의 나"를 비교해 보면 쓰기 쉬워요.</div>
+      <textarea id="growth" data-key="growth" class="tall" placeholder="예) 발표를 피하던 내가 2학기에는 조별 발표를 자원해서 맡게 되었다…"></textarea>
+      <div class="counter"></div>
+    </div>
+    <div class="field">
+      <label class="title">② 생기부(행동특성 및 종합의견)에 꼭 드러났으면 하는 나의 핵심 역량<span class="req">*</span></label>
+      <div class="hint">아래 <strong>6가지 핵심 역량</strong> 중에서 골라 쓰고, 그 역량이 드러난 <strong>실제 사례(이유)</strong>를 적어 주세요. <strong>1개 이상은 필수</strong>, 2·3번째는 선택입니다.<br>
+        <span class="chips"><span>자기관리 역량</span><span>심미적 감성 역량</span><span>지식정보처리 역량</span><span>협력적 소통 역량</span><span>창의적 사고 역량</span><span>공동체 역량</span></span>
+      </div>
+      <div class="row-list">
+        <div class="row">
+          <div class="idx">역량 1 (필수)</div>
+          <select data-key="s1kw"><option value="">— 핵심 역량 선택 —</option><option value="자기관리 역량">자기관리 역량</option><option value="심미적 감성 역량">심미적 감성 역량</option><option value="지식정보처리 역량">지식정보처리 역량</option><option value="협력적 소통 역량">협력적 소통 역량</option><option value="창의적 사고 역량">창의적 사고 역량</option><option value="공동체 역량">공동체 역량</option></select>
+          <textarea data-key="s1why" placeholder="이유 / 이 역량이 드러난 실제 사례 (예: 협력적 소통 역량 - 조별 과제에서 의견이 갈릴 때 중간에서 정리하고 조율함)"></textarea>
+        </div>
+        <div class="row">
+          <div class="idx">역량 2 (선택)</div>
+          <select data-key="s2kw"><option value="">— 핵심 역량 선택 —</option><option value="자기관리 역량">자기관리 역량</option><option value="심미적 감성 역량">심미적 감성 역량</option><option value="지식정보처리 역량">지식정보처리 역량</option><option value="협력적 소통 역량">협력적 소통 역량</option><option value="창의적 사고 역량">창의적 사고 역량</option><option value="공동체 역량">공동체 역량</option></select>
+          <textarea data-key="s2why" placeholder="이유 / 근거가 되는 사례"></textarea>
+        </div>
+        <div class="row">
+          <div class="idx">역량 3 (선택)</div>
+          <select data-key="s3kw"><option value="">— 핵심 역량 선택 —</option><option value="자기관리 역량">자기관리 역량</option><option value="심미적 감성 역량">심미적 감성 역량</option><option value="지식정보처리 역량">지식정보처리 역량</option><option value="협력적 소통 역량">협력적 소통 역량</option><option value="창의적 사고 역량">창의적 사고 역량</option><option value="공동체 역량">공동체 역량</option></select>
+          <textarea data-key="s3why" placeholder="이유 / 근거가 되는 사례"></textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- + -->
+  <section class="card" id="sec5">
+    <h2><span class="num">＋</span>1년간의 생활을 마치며 선생님에게 전하는 말</h2>
+    <p class="desc">형식 없이 자유롭게 써 주세요. 고마웠던 점, 아쉬웠던 점, 하고 싶었던 말, 내년의 다짐 무엇이든 좋습니다.</p>
+    <textarea data-key="toTeacher" class="tall" placeholder="선생님께…"></textarea>
+    <div class="counter"></div>
+  </section>
+</main>
+
+<div class="footer-bar">
+  <div class="wrap">
+    <button type="button" class="btn primary" onclick="showResult()">✅ 완성본 확인 · 제출하기</button>
+    <button type="button" class="btn" onclick="savePdf()">🖨 인쇄 · PDF 저장</button>
+    <button type="button" class="btn danger" onclick="resetAll()">🗑 전체 지우기</button>
+    <div class="save-status" id="saveStatus"></div>
+  </div>
+</div>
+
+<!-- 결과 모달 -->
+<div class="modal" id="modal">
+  <div class="box">
+    <div class="head">
+      <h3>완성본 미리보기 · 제출</h3>
+      <button type="button" class="btn" onclick="closeModal()">닫기</button>
+    </div>
+    <div class="body">
+      <div class="submit-panel" id="submitPanel">
+        <div class="submit-title">📨 뇽쌤 구글시트로 제출</div>
+        <p>아래 버튼을 누르면 작성한 내용이 선생님의 구글시트로 <strong>자동 전송</strong>됩니다. 같은 학번으로 다시 제출하면 최신 내용으로 갱신됩니다.</p>
+        <div class="submit-actions">
+          <button type="button" class="btn primary big" id="submitBtn" onclick="submitToSheet()">📨 제출하기 (구글시트 전송)</button>
+          <button type="button" class="btn big" onclick="savePdf()">🖨 PDF로 저장</button>
+        </div>
+        <div class="submit-status" id="submitStatus"></div>
+      </div>
+      <pre id="resultText"></pre>
+    </div>
+    <div class="foot">
+      <button type="button" class="btn" onclick="copyResult()">📋 텍스트 복사</button>
+      <button type="button" class="btn" onclick="downloadResult()">💾 .txt 저장</button>
+      <button type="button" class="btn" onclick="shareResult()">📤 공유</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  /* =====================================================================
+     ★ 선생님 설정 ★  구글시트 연동 주소 (Apps Script 웹 앱 URL)
+     - 구글시트 → 확장 프로그램 → Apps Script 에 제공된 코드를 붙여넣고
+       [배포 → 새 배포 → 웹 앱] 으로 배포한 뒤 나오는
+       https://script.google.com/macros/s/....../exec 주소를 아래 따옴표 안에 붙여넣으세요.
+     ===================================================================== */
+  var GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxc0z8tZ710_VO_6duqx2IzRkB0bOCDGhCm-SZnwB4tUNd4c3nzMvL7OjH6WlSEqxHk/exec';
+  var SHEET_LINK = 'https://docs.google.com/spreadsheets/d/1VGBWV1liHmXhMHLn-XvAizwH_SHGZAkfUnukMsLCYqA/edit?usp=sharing';
+
+  var STORAGE_KEY = 'portfolio_2026_v2';
+  var REQUIRED = ['name','sid','career','grade','role1name','role1desc','role2name','role2desc','studyEffort','careerEffort','growth','s1kw','s1why'];
+  var programCount = 0;
+
+  function $(sel){ return document.querySelector(sel); }
+  function $all(sel){ return Array.prototype.slice.call(document.querySelectorAll(sel)); }
+
+  function toast(msg){
+    var t = $('#toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(function(){ t.classList.remove('show'); }, 1800);
+  }
+
+  /* ---------- 프로그램 목록 ---------- */
+  function addProgram(data){
+    programCount++;
+    var list = $('#programList');
+    var row = document.createElement('div');
+    row.className = 'row program-row';
+    row.innerHTML =
+      '<button type="button" class="remove" title="삭제" onclick="removeProgram(this)">×</button>' +
+      '<div class="idx">프로그램</div>' +
+      '<input type="text" class="p-name" placeholder="프로그램명 (예: 진로 특강 - 보건의료인 초청 강연, 5월)">' +
+      '<textarea class="p-desc" placeholder="참여한 내용: 무엇을 했고, 무엇을 느꼇거나 배웠는지"></textarea>';
+    list.appendChild(row);
+    if (data) {
+      row.querySelector('.p-name').value = data.name || '';
+      row.querySelector('.p-desc').value = data.desc || '';
+    }
+    renumberPrograms();
+    bindInputs(row);
+  }
+  function removeProgram(btn){
+    var rows = $all('.program-row');
+    if (rows.length <= 1) {
+      var r = btn.parentNode;
+      r.querySelector('.p-name').value = '';
+      r.querySelector('.p-desc').value = '';
+      save();
+      return;
+    }
+    btn.parentNode.parentNode.removeChild(btn.parentNode);
+    renumberPrograms();
+    save();
+  }
+  function renumberPrograms(){
+    $all('.program-row').forEach(function(r, i){
+      r.querySelector('.idx').textContent = '프로그램 ' + (i + 1);
+    });
+  }
+  function getPrograms(){
+    return $all('.program-row').map(function(r){
+      return { name: r.querySelector('.p-name').value.trim(), desc: r.querySelector('.p-desc').value.trim() };
+    }).filter(function(p){ return p.name || p.desc; });
+  }
+
+  /* ---------- 저장 / 불러오기 ---------- */
+  function collect(){
+    var data = {};
+    $all('[data-key]').forEach(function(el){ data[el.getAttribute('data-key')] = el.value; });
+    data.programs = getPrograms();
+    data.savedAt = new Date().toISOString();
+    return data;
+  }
+  var saveTimer = null;
+  function save(){
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(collect()));
+        var now = new Date();
+        $('#saveStatus').textContent = '자동 저장됨 ' + pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
+      } catch (e) {
+        $('#saveStatus').textContent = '저장 실패: 브라우저 저장공간을 확인하세요';
+      }
+      updateProgress();
+    }, 300);
+  }
+  function pad(n){ return (n < 10 ? '0' : '') + n; }
+  function load(){
+    var raw = null;
+    try { raw = localStorage.getItem(STORAGE_KEY); } catch (e) {}
+    var data = raw ? JSON.parse(raw) : null;
+    if (data) {
+      $all('[data-key]').forEach(function(el){
+        var k = el.getAttribute('data-key');
+        if (data[k] !== undefined) el.value = data[k];
+      });
+      if (data.programs && data.programs.length) {
+        data.programs.forEach(function(p){ addProgram(p); });
+      } else {
+        addProgram(); addProgram();
+      }
+    } else {
+      addProgram(); addProgram();
+    }
+    updateCounters();
+    updateProgress();
+  }
+  function resetAll(){
+    if (!confirm('작성한 내용을 모두 지울까요? 되돌릴 수 없습니다.')) return;
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+    $all('[data-key]').forEach(function(el){ el.value = ''; });
+    $('#programList').innerHTML = '';
+    programCount = 0;
+    addProgram(); addProgram();
+    updateCounters();
+    updateProgress();
+    toast('모두 지웠습니다');
+    window.scrollTo(0, 0);
+  }
+
+  /* ---------- 진행률 / 글자수 ---------- */
+  function updateProgress(){
+    var done = 0;
+    REQUIRED.forEach(function(k){
+      var el = document.querySelector('[data-key="' + k + '"]');
+      if (el && el.value.trim()) done++;
+    });
+    var total = REQUIRED.length + 1;
+    if (getPrograms().length) done++;
+    var pct = Math.round(done / total * 100);
+    $('#progressBar').style.width = pct + '%';
+    $('#progressText').textContent = '필수 항목 작성 진행률 ' + pct + '% (' + done + '/' + total + ')';
+  }
+  function updateCounters(){
+    $all('textarea').forEach(function(ta){
+      var c = ta.nextElementSibling;
+      if (c && c.classList.contains('counter')) c.textContent = ta.value.length + '자';
+    });
+  }
+  function bindInputs(root){
+    (root || document).querySelectorAll('input, textarea, select').forEach(function(el){
+      if (el._bound) return;
+      el._bound = true;
+      el.addEventListener('change', function(){ el.classList.remove('missing'); save(); });
+      el.addEventListener('input', function(){
+        el.classList.remove('missing');
+        save();
+        if (el.tagName === 'TEXTAREA') {
+          var c = el.nextElementSibling;
+          if (c && c.classList.contains('counter')) c.textContent = el.value.length + '자';
+        }
+      });
+    });
+  }
+
+  /* ---------- 결과 생성 ---------- */
+  function v(k){
+    var el = document.querySelector('[data-key="' + k + '"]');
+    return el ? el.value.trim() : '';
+  }
+  function or(s){ return s || '(미작성)'; }
+  function buildText(){
+    var L = [];
+    var line = '━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
+    L.push('나의 학교 생활 성장Log (With 뇽쌤)');
+    L.push(line);
+    L.push('이름(학번): ' + or(v('name')) + ' (' + or(v('sid')) + ')');
+    L.push('진로 희망 분야: ' + or(v('career')));
+    L.push('');
+    L.push('1. 올해 나의 학교생활 돌아보기');
+    L.push(line);
+    L.push('[학교에서 참여한 프로그램]');
+    var ps = getPrograms();
+    if (!ps.length) L.push('  (미작성)');
+    ps.forEach(function(p, i){
+      L.push('  ' + (i + 1) + ') ' + or(p.name));
+      if (p.desc) L.push('     - 참여 내용: ' + p.desc.replace(/\n/g, '\n       '));
+    });
+    L.push('');
+    L.push('[학업성적 관리]');
+    L.push(indent(or(v('grade'))));
+    L.push('');
+    L.push('[학급 내 1인 1역 수행]');
+    L.push('  · 1학기 역할: ' + or(v('role1name')));
+    L.push(indent(or(v('role1desc')), '    '));
+    L.push('  · 2학기 역할: ' + or(v('role2name')));
+    L.push(indent(or(v('role2desc')), '    '));
+    if (v('roleExtra')) {
+      L.push('  · 그 외 학급 기여 / 기억에 남는 에피소드:');
+      L.push(indent(v('roleExtra'), '    '));
+    }
+    L.push('');
+    L.push('[친구들을 위해 했던 일]');
+    L.push(indent(or(v('forFriends'))));
+    L.push('');
+    L.push('2. 우리 반 친구들의 숨은 미담 찾기');
+    L.push(line);
+    var mt = ['청소 및 환경 정리를 묵묵히 잘하는 친구','배려심과 봉사심이 돋보였던 친구','수업 태도가 성실하고 모범적인 친구','학급 일을 주도하며 리더십을 발휘한 친구','분위기를 밝게 만들고 친구들과 두루 잘 어울리는 친구'];
+    mt.forEach(function(t, i){
+      var n = v('m' + (i + 1) + 'name'), d = v('m' + (i + 1) + 'desc');
+      L.push('  · ' + t + ': ' + or(n));
+      if (d) L.push(indent(d, '    '));
+    });
+    L.push('');
+    L.push('3. 학업 및 진로 탐색을 위한 노력');
+    L.push(line);
+    L.push('[성적 향상을 위한 노력]');
+    L.push(indent(or(v('studyEffort'))));
+    L.push('');
+    L.push('[진로 탐색을 위한 노력]');
+    L.push(indent(or(v('careerEffort'))));
+    L.push('');
+    L.push('4. 스스로를 평가 및 성찰하기');
+    L.push(line);
+    L.push('[올 한 해 가장 성장했다고 느끼는 부분]');
+    L.push(indent(or(v('growth'))));
+    L.push('');
+    L.push('[생기부(행특)에 드러났으면 하는 핵심 역량]');
+    for (var i = 1; i <= 3; i++) {
+      var kw = v('s' + i + 'kw'), why = v('s' + i + 'why');
+      if (kw || why) {
+        L.push('  ' + i + ') ' + or(kw));
+        if (why) L.push(indent(why, '     '));
+      }
+    }
+    L.push('');
+    L.push('+ 1년간의 생활을 마치며 선생님에게 전하는 말');
+    L.push(line);
+    L.push(indent(or(v('toTeacher'))));
+    L.push('');
+    L.push('작성일: ' + new Date().toLocaleDateString('ko-KR'));
+    return L.join('\n');
+  }
+  function indent(s, pre){
+    pre = pre || '  ';
+    return s.split('\n').map(function(x){ return pre + x; }).join('\n');
+  }
+
+  function checkRequired(){
+    var missing = [];
+    REQUIRED.forEach(function(k){
+      var el = document.querySelector('[data-key="' + k + '"]');
+      if (el && !el.value.trim()) { el.classList.add('missing'); missing.push(el); }
+    });
+    if (!getPrograms().length) {
+      var first = document.querySelector('.program-row .p-name');
+      if (first) { first.classList.add('missing'); missing.push(first); }
+    }
+    return missing;
+  }
+  function showResult(){
+    var missing = checkRequired();
+    if (missing.length) {
+      var go = confirm('아직 작성하지 않은 필수 항목이 ' + missing.length + '개 있습니다.\n빨간 테두리 항목을 확인해 주세요.\n\n그래도 완성본을 볼까요?');
+      if (!go) { missing[0].scrollIntoView({ behavior: 'smooth', block: 'center' }); missing[0].focus(); return; }
+    }
+    $('#resultText').textContent = buildText();
+    showSubmittedBadge();
+    $('#modal').classList.add('open');
+  }
+  function closeModal(){ $('#modal').classList.remove('open'); }
+  function fileName(){
+    var n = v('name') || '이름없음', s = v('sid') || '학번없음';
+    return '성장Log_' + s + '_' + n + '.txt';
+  }
+  function copyResult(){
+    var text = $('#resultText').textContent;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ toast('복사되었습니다. 선생님께 붙여넣어 제출하세요.'); }, function(){ fallbackCopy(text); });
+    } else { fallbackCopy(text); }
+  }
+  function fallbackCopy(text){
+    var ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); toast('복사되었습니다'); } catch (e) { toast('복사에 실패했습니다. 직접 선택해 복사해 주세요.'); }
+    document.body.removeChild(ta);
+  }
+  function downloadResult(){
+    var blob = new Blob(['\ufeff' + $('#resultText').textContent], { type: 'text/plain;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = fileName();
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+    toast('파일이 저장되었습니다');
+  }
+  function shareResult(){
+    var text = $('#resultText').textContent;
+    if (navigator.share) {
+      navigator.share({ title: '나의 학교 생활 성장Log (With 뇽쌤) - ' + (v('name') || ''), text: text }).catch(function(){});
+    } else {
+      toast('이 브라우저는 공유를 지원하지 않습니다. 복사 또는 파일 저장을 이용해 주세요.');
+    }
+  }
+
+
+  /* ---------- PDF 저장 / 구글시트 제출 ---------- */
+  function savePdf(){
+    var wasOpen = $('#modal').classList.contains('open');
+    if (wasOpen) closeModal();
+    setTimeout(function(){
+      window.print();
+      if (wasOpen) setTimeout(function(){ $('#modal').classList.add('open'); }, 300);
+    }, 150);
+  }
+  function buildPayload(){
+    var d = collect();
+    var ps = getPrograms();
+    var mt = ['청소·환경정리','배려·봉사','수업태도','리더십','분위기·어울림'];
+    var p = {
+      submittedAt: new Date().toISOString(),
+      sid: v('sid'), name: v('name'), career: v('career'),
+      programs: ps.map(function(x, i){ return (i + 1) + ') ' + x.name + (x.desc ? ' - ' + x.desc : ''); }).join('\n'),
+      grade: v('grade'),
+      role1name: v('role1name'), role1desc: v('role1desc'),
+      role2name: v('role2name'), role2desc: v('role2desc'),
+      roleExtra: v('roleExtra'), forFriends: v('forFriends'),
+      studyEffort: v('studyEffort'), careerEffort: v('careerEffort'),
+      growth: v('growth'),
+      s1kw: v('s1kw'), s1why: v('s1why'), s2kw: v('s2kw'), s2why: v('s2why'), s3kw: v('s3kw'), s3why: v('s3why'),
+      toTeacher: v('toTeacher'),
+      fullText: buildText(),
+      userAgent: navigator.userAgent
+    };
+    for (var i = 1; i <= 5; i++) {
+      p['m' + i + 'name'] = v('m' + i + 'name');
+      p['m' + i + 'desc'] = v('m' + i + 'desc');
+    }
+    return p;
+  }
+  function setSubmitStatus(msg, cls){
+    var s = $('#submitStatus');
+    s.className = 'submit-status' + (cls ? ' ' + cls : '');
+    s.innerHTML = msg;
+  }
+  function submitToSheet(){
+    if (!GOOGLE_SCRIPT_URL) {
+      setSubmitStatus('⚠️ 아직 선생님이 구글시트 제출 주소를 설정하지 않았습니다. 아래 <b>텍스트 복사</b> 또는 <b>.txt 저장</b>으로 제출해 주세요.', 'err');
+      return;
+    }
+    if (!v('name') || !v('sid')) {
+      setSubmitStatus('⚠️ 이름과 학번을 먼저 입력해 주세요.', 'err');
+      return;
+    }
+    var missing = checkRequired();
+    if (missing.length && !confirm('필수 항목 ' + missing.length + '개가 비어 있습니다. 그래도 제출할까요?\n(나중에 다시 제출하면 최신 내용으로 갱신됩니다.)')) return;
+
+    var btn = $('#submitBtn');
+    btn.disabled = true; btn.textContent = '전송 중…';
+    setSubmitStatus('구글시트로 전송하고 있습니다. 잠시만 기다려 주세요…');
+    var payload = JSON.stringify(buildPayload());
+    var ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+    var timer = setTimeout(function(){ if (ctrl) ctrl.abort(); }, 20000);
+
+    fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: payload, redirect: 'follow', signal: ctrl ? ctrl.signal : undefined })
+      .then(function(r){ return r.text(); })
+      .then(function(t){
+        clearTimeout(timer);
+        var res = null;
+        try { res = JSON.parse(t); } catch (e) {}
+        if (res && res.ok) {
+          var when = new Date().toLocaleString('ko-KR');
+          setSubmitStatus('✅ 제출 완료! (' + when + ') ' + (res.action === 'updated' ? '이전 제출 내용이 최신 내용으로 갱신되었습니다.' : '선생님 구글시트에 저장되었습니다.') + '<br>필요하면 <b>PDF로 저장</b>도 눌러 보관하세요.', 'ok');
+          try { localStorage.setItem(STORAGE_KEY + '_submitted', when); } catch (e) {}
+          btn.textContent = '✅ 제출 완료 (다시 제출 가능)';
+          toast('제출되었습니다!');
+        } else {
+          throw new Error((res && res.error) || '응답 오류');
+        }
+      })
+      .catch(function(err){
+        clearTimeout(timer);
+        setSubmitStatus('❌ 전송에 실패했습니다 (' + (err && err.message ? err.message : '네트워크 오류') + ').<br>인터넷 연결을 확인하고 다시 시도하거나, <b>텍스트 복사 / .txt 저장</b>으로 선생님께 보내 주세요.', 'err');
+        btn.textContent = '📨 다시 제출하기';
+      })
+      .then(function(){ btn.disabled = false; });
+  }
+  function showSubmittedBadge(){
+    var when = null;
+    try { when = localStorage.getItem(STORAGE_KEY + '_submitted'); } catch (e) {}
+    if (when) setSubmitStatus('ℹ️ 마지막 제출: ' + when + ' — 내용을 수정했다면 다시 제출하면 갱신됩니다.');
+  }
+
+  $('#modal').addEventListener('click', function(e){ if (e.target === this) closeModal(); });
+  window.addEventListener('beforeprint', function(){
+    document.title = '성장Log_' + (v('sid') || '학번') + '_' + (v('name') || '이름');
+    $all('textarea').forEach(function(ta){ ta.style.height = 'auto'; ta.style.height = (ta.scrollHeight + 4) + 'px'; });
+  });
+  window.addEventListener('afterprint', function(){ document.title = '나의 학교 생활 성장Log (With 뇽쌤)'; });
+
+  load();
+  bindInputs(document);
+</script>
+</body>
+</html>
